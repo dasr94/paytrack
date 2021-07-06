@@ -3,7 +3,7 @@
 Plugin Name: Paytrack
 Plugin URI: https://danielsanchez.amarusv.com/
 Description: Registro de pagos.
-Version: 1.0.0
+Version: 1.0.1
 Author: Daniel Sanchez
 Author URI: http://danielsanchez.amarusv.com/
 */
@@ -63,3 +63,57 @@ function paytrack_custom_post_type() {
 
 }
 add_action( 'init', 'paytrack_custom_post_type', 0 );
+
+// https://www.dariobf.com/metabox-wordpress/
+// https://www.dariobf.com/wordpress-hooks/
+
+function add_post_type_paytrack(){
+	echo '
+	<form action="' . $_SERVER['REQUEST_URI'] . '" method="post" >
+		<input type="text" name="Nombre">
+		<input type="text" name="descripcion">
+		<input type="text" name="tipo">
+		<input type="text" name="valor">
+		<input type="submit" name="submit" value="validar">
+	</form>
+
+	<h1>aqui debe de mostrar el formulario de tailwind</h1>
+
+		<div class="w-full max-w-xs">
+	<form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+		<div class="mb-4">
+		<label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+			Username
+		</label>
+		<input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Username">
+		</div>
+		<div class="mb-6">
+		<label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+			Password
+		</label>
+		<input class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="******************">
+		<p class="text-red-500 text-xs italic">Please choose a password.</p>
+		</div>
+		<div class="flex items-center justify-between">
+		<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+			Sign In
+		</button>
+		<a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="#">
+			Forgot Password?
+		</a>
+		</div>
+	</form>
+	<p class="text-center text-gray-500 text-xs">
+		&copy;2020 Acme Corp. All rights reserved.
+	</p>
+	</div>
+	';
+}
+
+add_shortcode( 'paytrack_form_frontpage', 'add_post_type_paytrack' );
+
+
+function add_tailwind(){
+	wp_enqueue_style( 'custom-style-tailwind', '/wp-content/plugins/paytrack/css/tailwind.css');
+}
+add_action( 'wp_enqueue_scripts', 'add_tailwind');
