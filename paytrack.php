@@ -117,3 +117,19 @@ function add_tailwind(){
 	wp_enqueue_style( 'custom-style-tailwind', '/wp-content/plugins/paytrack/css/tailwind.css');
 }
 add_action( 'wp_enqueue_scripts', 'add_tailwind');
+
+function guardar_custom_post(){
+	if(isset($_POST['validar'])){
+		$nombre = $_POST['nombre'];
+		$descripcion = $_POST['descripcion'];
+		$tipo = $_POST['tipo'];
+		$valor = $_POST['valor'];
+		$new_post = array(
+			"post_title" => $nombre,
+			"post_type" => "paytrack",
+
+		);
+		wp_insert_post($new_post);
+		//https://maugelves.com/wp-posts-el-corazon-de-wordpress/
+	}
+}
