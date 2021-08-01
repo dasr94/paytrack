@@ -68,14 +68,37 @@ add_action( 'init', 'paytrack_custom_post_type', 0 );
 // https://www.dariobf.com/wordpress-hooks/
 
 function add_post_type_paytrack(){
-	echo '
+
+	
+	$output =  '
 	<form action="' . $_SERVER['REQUEST_URI'] . '" method="post" >
 		<input type="text" name="Nombre">
 		<input type="text" name="descripcion">
 		<input type="text" name="tipo">
 		<input type="text" name="valor">
 		<input type="submit" name="submit" value="validar">
-	</form>
+	</form>';
+	
+	if(isset($_REQUEST['validar'])){
+		$nombre = $_REQUEST['nombre'];
+		$descripcion = $_REQUEST['descripcion'];
+		$tipo = $_REQUEST['tipo'];
+		$valor = $_REQUEST['valor'];
+		$new_post = array(
+			"post_title" => $nombre,
+			"post_type" => "paytrack",
+			"post_content" => $descripcion,
+			"post_status" => "publish"
+		);
+		$id_new_post = wp_insert_post($new_post);
+		update_post_meta($id_new_post, "tipo", $tipo);
+		update_post_meta($id_new_post, "valor", $valor);
+		//https://maugelves.com/wp-posts-el-corazon-de-wordpress/
+	}
+
+	echo $output;
+
+	$output = '
 
 	<h1>aqui debe de mostrar el formulario de tailwind</h1>
 
@@ -119,17 +142,20 @@ function add_tailwind(){
 add_action( 'wp_enqueue_scripts', 'add_tailwind');
 
 function guardar_custom_post(){
-	if(isset($_POST['validar'])){
-		$nombre = $_POST['nombre'];
-		$descripcion = $_POST['descripcion'];
-		$tipo = $_POST['tipo'];
-		$valor = $_POST['valor'];
+	if(isset($_REQUEST['validar'])){
+		$nombre = $_REQUEST['nombre'];
+		$descripcion = $_REQUEST['descripcion'];
+		$tipo = $_REQUEST['tipo'];
+		$valor = $_REQUEST['valor'];
 		$new_post = array(
 			"post_title" => $nombre,
 			"post_type" => "paytrack",
-
+			"post_content" => $descripcion,
+			"post_status" => "publish"
 		);
-		wp_insert_post($new_post);
+		$id_new_post = wp_insert_post($new_post);
+		update_post_meta($id_new_post, "tipo", $tipo);
+		update_post_meta($id_new_post, "valor", $valor);
 		//https://maugelves.com/wp-posts-el-corazon-de-wordpress/
 	}
 }
